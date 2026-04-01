@@ -1,0 +1,6 @@
+    This is a generic data migrating tool. It supports an array of different input sources (ingress handlers)
+and an array of different output destinations (egress handlers). These ingress and egress handlers can work
+together and be mix-matched to suit your input/output needs.
+
+    I have supplied some sample jobs to show how to operate each type of ingress and egress handler. If you
+notice a bug or have an idea for a new ingress/egress handler, let me know and show some code.

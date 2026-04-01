@@ -1,0 +1,15 @@
+// YEAR 2022
+$historicalYear = 2022;
+$historicalSnapshotDate = '2022-06-30';
+
+// YEAR 2023
+$historicalYear = 2023;
+$historicalSnapshotDate = '2023-06-30';
+
+// YEAR 2024
+$historicalYear = 2024;
+$historicalSnapshotDate = '2024-06-30';
+
+// YEAR 2025
+$historicalYear = 2025;
+$historicalSnapshotDate = '2025-06-30';
