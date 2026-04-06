@@ -51,7 +51,7 @@ $config = array(
     'exports'                     => array(
         7 => array(
             'name'    => 'Ed-Fi Suite 3 - People',
-            'enabled' => true,
+            'enabled' => false,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -70,6 +70,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_people',
                 'postCurlRestMilliseconds' => 250
             )
@@ -82,7 +83,7 @@ $config = array(
 
         0 => array(
             'name'    => 'Ed-Fi Suite 3 - Credentials',
-            'enabled' => true,
+            'enabled' => false,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -103,6 +104,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_credentials',
                 'postCurlRestMilliseconds' => 250
             )
@@ -134,6 +136,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_staffs',
                 'postCurlRestMilliseconds' => 250
             )
@@ -167,6 +170,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_staffEducationOrganizationEmploymentAssociations',
                 'postCurlRestMilliseconds' => 250
             )
@@ -200,6 +204,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_staffEducationOrganizationAssignmentAssociations',
                 'postCurlRestMilliseconds' => 250
             )
@@ -230,6 +235,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_openStaffPositions',
                 'postCurlRestMilliseconds' => 250
             )
@@ -262,6 +268,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_staffAbsenceEvents',
                 'postCurlRestMilliseconds' => 250
             )
@@ -294,6 +301,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_staffEducationOrganizationAssignmentAssociations',
                 'postCurlRestMilliseconds' => 250
             )
@@ -325,6 +333,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_performanceEvaluations',
                 'postCurlRestMilliseconds' => 250
             )
@@ -357,6 +366,7 @@ $config = array(
                 'edfi_apiClientSecret'     => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific'    => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'        => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'      => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'         => 'o_performanceEvaluationRatings',
                 'postCurlRestMilliseconds' => 250
             )
@@ -400,14 +410,16 @@ class jobTransformer implements i_jobTransformation {
         global $apiDestination;
 
         //get entities from student, will only pull records for entities that exist in ODS already.
+        $apiConnParams = custom_locationproperties::getConnectionParameters($apiDestination);
         $edfiPointer = new edfiSuite3();
         $ret = $edfiPointer->init(
-            custom_locationproperties::getConnectionParameters($apiDestination)['apiUrlBase'],
-            driver::$crypto->decrypt(custom_locationproperties::getConnectionParameters($apiDestination)['apiClientID']),
-            driver::$crypto->decrypt(custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret']),
+            $apiConnParams['apiUrlBase'],
+            driver::$crypto->decrypt($apiConnParams['apiClientID']),
+            driver::$crypto->decrypt($apiConnParams['apiClientSecret']),
             "",
-            custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
-            driver::$crypto->decrypt(custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'])
+            $apiConnParams['instanceSpecific']   ?? false,
+            driver::$crypto->decrypt($apiConnParams['databaseUuid'] ?? ''),
+            $apiConnParams['yearBeforeData']     ?? false
         );
 
         if ($ret !== false) {
@@ -693,7 +705,7 @@ class jobTransformer implements i_jobTransformation {
 
         /* Build initial export record. */
         $out = array(
-            "personId" => $row["PersonId"],
+            "personId" => self::getStaffId($row),
             "sourceSystemDescriptor" => custom_locationproperties::GetDescriptorUrlBaseSuite3($apiDestination, 'SourceSystemDescriptor') . "#Skyward"
         );
 

@@ -11,7 +11,10 @@
  *   5. Authenticated GET to a lightweight endpoint returns HTTP 200
  *
  * Run from CLI:
- *   php test_api.php
+ *   php test_api.php                              — tests ALL EdFiSuite3 connections
+ *   php test_api.php --api=prod_edfi              — tests all connections with connKey "prod_edfi"
+ *   php test_api.php --dataSource=district        — tests all connections for data source "district"
+ *   php test_api.php --dataSource=district --api=prod_edfi  — tests one specific connection
  *
  * The API connection(s) under test are pulled directly from
  * config::$connectionParametersStorage, so keep this file in sync
@@ -19,6 +22,24 @@
  */
 
 require(__DIR__ . '/___core/init.php');
+
+
+/* ===========================================================================
+ * ===   CLI FILTERS
+ * =========================================================================== */
+
+$cliOpts        = getopt('', array('dataSource::', 'api::'));
+$filterSource   = isset($cliOpts['dataSource']) ? trim($cliOpts['dataSource']) : '';
+$filterApi      = isset($cliOpts['api'])        ? trim($cliOpts['api'])        : '';
+
+if (!empty($filterSource) || !empty($filterApi)) {
+    $parts = array();
+    if (!empty($filterSource)) { $parts[] = 'dataSource=' . $filterSource; }
+    if (!empty($filterApi))    { $parts[] = 'api='        . $filterApi;    }
+    echo PHP_EOL . '[  INFO  ]  Filtering connections: ' . implode(', ', $parts) . PHP_EOL;
+} else {
+    echo PHP_EOL . '[  INFO  ]  No filter specified — testing ALL EdFiSuite3 connections.' . PHP_EOL;
+}
 
 
 /* ===========================================================================
@@ -117,13 +138,14 @@ result('config::$encrytionKey is not empty', $encKeySet,
  * ===   FIND EdFiSuite3 CONNECTIONS IN CONFIG
  * =========================================================================== */
 
-$apiConnections = array();
+$apiConnections    = array();
+$allApiConnections = array();
 foreach (config::$connectionParametersStorage as $dataSourceName => $connections) {
     foreach ($connections as $connKey => $connParams) {
         /* Identify Ed-Fi Suite 3 connections by the expected keys. */
         if (is_array($connParams) &&
             isset($connParams['apiUrlBase'], $connParams['apiClientID'], $connParams['apiClientSecret'])) {
-            $apiConnections[] = array(
+            $allApiConnections[] = array(
                 'dataSource' => $dataSourceName,
                 'connKey'    => $connKey,
                 'params'     => $connParams,
@@ -132,9 +154,27 @@ foreach (config::$connectionParametersStorage as $dataSourceName => $connections
     }
 }
 
-if (empty($apiConnections)) {
+/* Apply --dataSource and/or --api filters if provided. */
+foreach ($allApiConnections as $entry) {
+    $sourceMatch = empty($filterSource) || $entry['dataSource'] === $filterSource;
+    $apiMatch    = empty($filterApi)    || $entry['connKey']    === $filterApi;
+    if ($sourceMatch && $apiMatch) {
+        $apiConnections[] = $entry;
+    }
+}
+
+if (empty($allApiConnections)) {
     echo PHP_EOL . '[  WARN  ]  No EdFiSuite3 connections found in config::$connectionParametersStorage.' . PHP_EOL;
     echo '            Add an "EdFiSuite3" block with apiUrlBase, apiClientID, apiClientSecret.' . PHP_EOL;
+    exit(0);
+}
+
+if (empty($apiConnections)) {
+    echo PHP_EOL . '[  WARN  ]  No connections matched the filter.' . PHP_EOL;
+    echo '            Available connections:' . PHP_EOL;
+    foreach ($allApiConnections as $entry) {
+        echo '              --dataSource=' . $entry['dataSource'] . ' --api=' . $entry['connKey'] . PHP_EOL;
+    }
     exit(0);
 }
 
@@ -158,8 +198,8 @@ foreach ($apiConnections as $entry) {
     $idOk     = !empty(trim($params['apiClientID']));
     $secretOk = !empty(trim($params['apiClientSecret']));
 
-    result("apiUrlBase is set  [{$label}]",    $urlOk,    $urlOk    ? $apiUrlBase : 'apiUrlBase is empty in config.');
-    result("apiClientID is set  [{$label}]",   $idOk,     $idOk     ? '(value present)' : 'apiClientID is empty in config.');
+    result("apiUrlBase is set  [{$label}]",      $urlOk,    $urlOk    ? $apiUrlBase       : 'apiUrlBase is empty in config.');
+    result("apiClientID is set  [{$label}]",     $idOk,     $idOk     ? '(value present)' : 'apiClientID is empty in config.');
     result("apiClientSecret is set  [{$label}]", $secretOk, $secretOk ? '(value present)' : 'apiClientSecret is empty in config.');
 
     if (!$urlOk || !$idOk || !$secretOk) {
@@ -204,25 +244,39 @@ foreach ($apiConnections as $entry) {
         continue;
     }
 
-    /* Build token URL — account for databaseUuid in the path if present.
-     * Decrypt if an encryption key is set, fall back to raw value otherwise
-     * (covers both encrypted and plain-text UUID configs). */
-    $rawUuid      = trim($params['databaseUuid'] ?? '');
-    $instanceSpec = $params['instanceSpecific'] ?? false;
-    if (!empty($rawUuid) && $encKeySet) {
-        try {
-            $databaseUuid = driver::$crypto->decrypt($rawUuid);
-        } catch (Exception $e) {
+    /* Decrypt databaseUuid if present — mirrors how edfiSuite3::init() receives it. */
+    $databaseUuid   = '';
+    $rawUuid        = trim($params['databaseUuid'] ?? '');
+    $instanceSpec   = $params['instanceSpecific'] ?? false;
+    /* yearBeforeData — set true in config for Ed-Fi v7.x SaaS instances where the year
+     * appears between the UUID and the verb path, e.g.:
+     *   token:    /{uuid}/{year}/oauth/token
+     *   resource: /{uuid}/{year}/data/v3/                                        */
+    $yearBeforeData = !empty($params['yearBeforeData']);
+
+    if (!empty($rawUuid)) {
+        if ($encKeySet) {
+            try {
+                $databaseUuid = trim(driver::$crypto->decrypt($rawUuid));
+            } catch (Exception $e) {
+                $databaseUuid = $rawUuid; // fall back to raw if decrypt fails
+            }
+        } else {
             $databaseUuid = $rawUuid;
         }
-    } else {
-        $databaseUuid = $rawUuid;
     }
 
-    if (!empty($databaseUuid)) {
+    /* Year used in URL paths — same source as edfiSuite3::generateURL(). */
+    $year = driver::$currentSY[1];
+
+    /* Build token URL.
+     *   Standard (no UUID):                /oauth/token
+     *   UUID (apiInstYearSpecUrls style):   /{uuid}/oauth/token
+     *   UUID + yearBeforeData (v7.x SaaS):  /{uuid}/{year}/oauth/token           */
+    if (!empty($databaseUuid) && $yearBeforeData) {
+        $tokenPath = '/' . $databaseUuid . '/' . $year . '/oauth/token';
+    } elseif (!empty($databaseUuid)) {
         $tokenPath = '/' . $databaseUuid . '/oauth/token';
-    } elseif ($instanceSpec) {
-        $tokenPath = '/oauth/token';
     } else {
         $tokenPath = '/oauth/token';
     }
@@ -274,13 +328,19 @@ foreach ($apiConnections as $entry) {
 
     section("Test 5: Authenticated GET (HTTP 200)  [{$label}]");
 
-    /* Build the staffs endpoint URL, mirroring edfiSuite3::generateURL() logic. */
-    if (!empty($databaseUuid)) {
-        $getPath = '/data/v3/' . $databaseUuid . '/' . config::$historicalYear . '/ed-fi/staffs?limit=1';
+    /* Build the staffs endpoint URL, mirroring edfiSuite3::generateURL() logic.
+     *   Standard:                     /data/v3/{year}/ed-fi/staffs?limit=1
+     *   instanceSpec (no year):       /data/v3/ed-fi/staffs?limit=1
+     *   UUID (apiInstYearSpecUrls):   /data/v3/{uuid}/{year}/ed-fi/staffs?limit=1
+     *   UUID + yearBeforeData (v7.x): /{uuid}/{year}/data/v3/ed-fi/staffs?limit=1  */
+    if (!empty($databaseUuid) && $yearBeforeData) {
+        $getPath = '/' . $databaseUuid . '/' . $year . '/data/v3/ed-fi/staffs?limit=1';
+    } elseif (!empty($databaseUuid)) {
+        $getPath = '/data/v3/' . $databaseUuid . '/' . $year . '/ed-fi/staffs?limit=1';
     } elseif ($instanceSpec) {
         $getPath = '/data/v3/ed-fi/staffs?limit=1';
     } else {
-        $getPath = '/data/v3/' . config::$historicalYear . '/ed-fi/staffs?limit=1';
+        $getPath = '/data/v3/' . $year . '/ed-fi/staffs?limit=1';
     }
 
     /* Append subscription key if present. */
@@ -311,7 +371,7 @@ foreach ($apiConnections as $entry) {
     result("GET /staffs returned HTTP 200  [{$label}]", $getHttpOk,
         $getHttpOk
             ? 'HTTP 200 — API is reachable and token is valid.'
-            : 'HTTP ' . $getResponse['http_code'] . '. Check API URL, year (' . config::$historicalYear . '), and token scope. Raw: ' . substr($getResponse['body'], 0, 300));
+            : 'HTTP ' . $getResponse['http_code'] . '. Check API URL, year (' . $year . '), and token scope. Raw: ' . substr($getResponse['body'], 0, 300));
 
     /* Bonus: confirm response body is valid JSON array. */
     if ($getHttpOk) {

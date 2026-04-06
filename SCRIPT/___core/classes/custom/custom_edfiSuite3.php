@@ -138,7 +138,7 @@ class custom_EdFiSuite3
         ',
         "people" => '
             SELECT
-              "HAAPRO"."HAAPRO-OTHER-ID" AS \'PersonId\'
+              "HAAPRO"."HAAPRO-OTHER-ID"
              ,%%staffIdColumn%% AS \'STAFF-UNIQUE-ID\'
              ,"N"."NAME-ID"
 

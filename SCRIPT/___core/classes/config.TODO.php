@@ -113,7 +113,7 @@ class config
      * @var array
      */
     public static $hrPlans = array(
-        "DISCTRICT_NAME" => "HR_PLAN_NAME",
+        "DISTRICT" => "",
     );
 
     /**
@@ -154,7 +154,7 @@ class config
     public static function init() {
         self::$connectionParametersStorage = array();
 
-        self::$connectionParametersStorage['DISTRICT_NAME'] = array( // Change to your district name.
+        self::$connectionParametersStorage['DISTRICT'] = array( // Change to your district name.
             /* === Skyward Business Database (Production) === */
             "prod_skyward_fin"            => array(
                 'DSN'      => 'Driver={Progress OpenEdge 11.7 driver};Host=;Db=SKYWARD;Port=;DIL=READ UNCOMMITTED', // Set host and port values.
@@ -178,6 +178,15 @@ class config
                 'databaseUuid'      => '',   // Leave blank if database UUID is not part of the API URL. Use \___core\encryptString.php to encrypt.
                 'instanceSpecific'  => false // true = School year not in API URL; false = School year part of API URL. (see \___core\classes\edFiSuite3.php)
             ),
+	        "EdFiSuite3-7x" => array(
+                'descriptorURLBase' => 'uri://skywardbis.com/',
+                'apiUrlBase'        => '', // Use \___core\encryptString.php to encrypt.
+                'apiClientID'       => '', // Use \___core\encryptString.php to encrypt.
+                'apiClientSecret'   => '', // Use \___core\encryptString.php to encrypt.
+                'databaseUuid'      => '',   // Leave blank if database UUID is not part of the API URL. Use \___core\encryptString.php to encrypt.
+                'instanceSpecific'  => false, // true = School year not in API URL; false = School year part of API URL. (see \___core\classes\edFiSuite3.php)
+                'yearBeforeData'   => true 
+            ),
             /* === JSON Exports (for debugging) === */
             "json"          => array(
                 'descriptorURLBase' => '' // Just copy what you use for Ed-Fi sends.
@@ -190,9 +199,9 @@ class config
          * ===   LOCATION PROPERTIES   ===
          * =============================== */
         self::$locationProperties = array(
-            'DISTRICT_NAME' => array(
+            'DISTRICT' => array(
                 'districtCode' => '', // Florida DOE district number, or use your EdOrg number.
-                'planName'     => self::$hrPlans["DISTRICT_NAME"], // Inherits from $hrPlans above.
+                'planName'     => self::$hrPlans["DISTRICT"], // Inherits from $hrPlans above.
             )
         );
     }

@@ -264,3 +264,73 @@ if (empty(config::$encryptionKey)) {
 ```
 
 ---
+
+## 7. Additional Bug Fixes & Feature Additions (v1.1)
+
+### Linux Filesystem Compatibility — Autoloader Case Mismatch
+
+Renamed `egress_edfiSuite3.php` → `egress_edfisuite3.php` so the autoloader resolves correctly on case-sensitive Linux filesystems. The previous filename caused a `strtolower` mismatch that prevented the class from loading on Linux hosts.
+
+### API Error-Response Loop Guard (`loopDataWithCallback`)
+
+```php
+// SKYBRIDGE v1.0 — no guard; iterates thousands of offsets if API returns an error object
+foreach ($records as $offset => $record) { ... }
+
+// SKYBRIDGE v1.1 — breaks immediately when the first element is not an indexed record
+if (!isset($records[0])) {
+    log::logAlert(...);  // surface error message in job log
+    break;
+}
+```
+
+Previously, when the Ed-Fi API returned a JSON object (e.g., an HTTP 500 error or metadata response) instead of an indexed array, `loopDataWithCallback()` would continue iterating through thousands of wasted offset requests and emit PHP notices. The new `isset($records[0])` guard breaks the loop immediately, and a `log::logAlert()` call in the `else` branch surfaces the API error message in the job log instead of failing silently.
+
+### People Entity — `getStaffId()` and SQL Alias Fix
+
+```php
+// SKYBRIDGE v1.0 — hardcoded key, inconsistent with all other entities
+$staffId = $row["PersonId"];
+
+// SKYBRIDGE v1.1 — uses shared helper, consistent with all other entities
+$staffId = custom_edfiSuite3::getStaffId($row);
+```
+
+`processRow_Person` was using the hardcoded key `$row["PersonId"]` instead of the shared `getStaffId()` helper used by every other entity. The corresponding SQL query also aliased the column `AS 'PersonId'`, hiding the `HAAPRO-OTHER-ID` fallback key. Both have been corrected: the `AS 'PersonId'` alias is removed from the people SQL query, and `processRow_Person` now calls `getStaffId()`.
+
+### `o_schools` Callback — Null-Safety Guards
+
+Added a `!is_array($record)` guard and `?? ''` null coalescing in the `o_schools` callback in `EdFi_Staff_Suite3-JSON.php` to prevent `array-offset-on-null` PHP notices when the API returns a non-array element.
+
+### Ed-Fi v7.x SaaS URL Pattern Support (Pattern 4)
+
+Ed-Fi SaaS-hosted instances running v7.x use a different URL path order than self-hosted instances. SKYBRIDGE v1.1 adds support for this pattern via a new `yearBeforeData` flag:
+
+| Pattern | Token Path | Resource Path |
+|---------|-----------|---------------|
+| 1 (legacy) | `/oauth/token` | `/data/v3/...` |
+| 2 | `/oauth/token` | `/data/v3/{year}/...` |
+| 3 | `/{uuid}/{year}/oauth/token` | `/data/v3/{uuid}/{year}/...` *(old order)* |
+| **4 (new)** | `/{uuid}/{year}/oauth/token` | `/{uuid}/{year}/data/v3/...` *(SaaS v7.x)* |
+
+**Implementation details:**
+
+- Added `$apiYearUuidSpecUrls` array to `edfiSuite3.php` covering all resources and descriptors in the new path order.
+- Added `$yearBeforeData` property to `edfiSuite3.php`.
+- Updated `init()` signature with a 7th parameter `$yearBeforeData = false` (backward-compatible default).
+- Updated `generateURL()` branch order so Pattern 4 is checked before Pattern 3.
+- Propagated `yearBeforeData` through `egress_edfisuite3.php` via a new static property, read from the `edfi_yearBeforeData` output config key and passed to `init()`.
+- Added `edfi_yearBeforeData` output config key to all entity blocks in `EdFi_Staff_Suite3-JSON.php`, `EdFi_Staff_Suite3-API.php`, and `EdFi_Descriptors_Suite3.php` (reads `yearBeforeData ?? false` from connection parameters).
+
+### `getConnectionParameters()` Side-Effect Fix
+
+In `EdFi_Staff_Suite3-JSON.php` and `EdFi_Staff_Suite3-API.php`, the hand-coded `edfiSuite3::init()` calls used to build the `odsEntitiesString` (schools GET) called `getConnectionParameters()` multiple times. Repeated calls had side effects that could lose the UUID from connection state. The result is now cached in `$apiConnParams` on first call, and `yearBeforeData` / `instanceSpecific ?? false` guards are applied consistently.
+
+### `test_api.php` Rebuild (FOR-FLCODE)
+
+- Added `--dataSource` and `--api` CLI filters with fallback connection listing when arguments are omitted.
+- Added `yearBeforeData` branching for token and GET URL construction.
+- Fixed year source from `config::$historicalYear` to `driver::$currentSY[1]`.
+- Fixed GET URL segment order for v7.x (`/{uuid}/{year}/data/v3/` vs `/data/v3/{uuid}/{year}/`).
+
+---

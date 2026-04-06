@@ -33,6 +33,14 @@ class edfiSuite3
     private $databaseUuid = '';
 
     /**
+     * Ed-Fi v7.x SaaS URL pattern: year segment comes before /data/v3 in the path.
+     *   token:    /{uuid}/{year}/oauth/token
+     *   resource: /{uuid}/{year}/data/v3/ed-fi/...
+     * @var bool
+     */
+    private $yearBeforeData = false;
+
+    /**
      * Ed-Fi oAuth Secrets
      * @var array
      */
@@ -196,6 +204,59 @@ class edfiSuite3
         'o_termDescriptors'                                  => '/data/v3/%%databaseUuid%%/%%year%%/ed-fi/termDescriptors?',
     );
 
+    /**
+     * Ed-Fi v7.x SaaS URL pattern: /{uuid}/{year}/oauth/token and /{uuid}/{year}/data/v3/...
+     * Use when yearBeforeData = true in the connection config.
+     * @var array
+     */
+    public $apiYearUuidSpecUrls = array(
+        'apiBase'                                            => '',
+        'getToken'                                           => '/%%databaseUuid%%/%%year%%/oauth/token?',
+
+        /* === Resources === */
+        'o_credentials'                                      => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/credentials?',
+        'o_localEducationAgencies'                           => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/localEducationAgencies?',
+        'o_openStaffPositions'                               => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/openStaffPositions?',
+        'o_people'                                           => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/people?',
+        'o_performanceEvaluationRatings'                     => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/performanceEvaluationRatings?',
+        'o_performanceEvaluations'                           => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/performanceEvaluations?',
+        'o_schools'                                          => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/schools?',
+        'o_staffEducationOrganizationAssignmentAssociations' => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/staffEducationOrganizationAssignmentAssociations?',
+        'o_staffEducationOrganizationEmploymentAssociations' => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/staffEducationOrganizationEmploymentAssociations?',
+        'o_staffAbsenceEvents'                               => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/staffAbsenceEvents?',
+        'o_staffs'                                           => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/staffs?',
+        'o_stateEducationAgencies'                           => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/stateEducationAgencies?',
+
+        /* === Descriptors === */
+        'o_absenceEventCategoryDescriptors'                  => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/absenceEventCategoryDescriptors?',
+        'o_addressTypeDescriptors'                           => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/addressTypeDescriptors?',
+        'o_certificationFieldDescriptors'                    => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/certificationFieldDescriptors?',
+        'o_certificationLevelDescriptors'                    => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/certificationLevelDescriptors?',
+        'o_credentialFieldDescriptors'                       => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/credentialFieldDescriptors?',
+        'o_credentialTypeDescriptors'                        => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/credentialTypeDescriptors?',
+        'o_citizenshipStatusDescriptors'                     => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/citizenshipStatusDescriptors?',
+        'o_educationOrganizationCategoryDescriptors'         => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/educationOrganizationCategoryDescriptors?',
+        'o_electronicMailTypeDescriptors'                    => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/electronicMailTypeDescriptors?',
+        'o_employmentStatusDescriptors'                      => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/employmentStatusDescriptors?',
+        'o_evaluationPeriodDescriptors'                      => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/evaluationPeriodDescriptors?',
+        'o_gradeLevelDescriptors'                            => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/gradeLevelDescriptors?',
+        'o_levelOfEducationDescriptors'                      => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/levelOfEducationDescriptors?',
+        'o_operationalStatusDescriptors'                     => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/operationalStatusDescriptors?',
+        'o_performanceEvaluationRatingLevelDescriptors'      => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/performanceEvaluationRatingLevelDescriptors?',
+        'o_performanceEvaluationTypeDescriptors'             => '/%%databaseUuid%%/%%year%%/data/v3/tpdm/performanceEvaluationTypeDescriptors?',
+        'o_programCharacteristicDescriptors'                 => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/programCharacteristicDescriptors?',
+        'o_raceDescriptors'                                  => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/raceDescriptors?',
+        'o_separationReasonDescriptors'                      => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/separationReasonDescriptors?',
+        'o_sourceSystemDescriptors'                          => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/sourceSystemDescriptors?',
+        'o_sexDescriptors'                                   => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/sexDescriptors?',
+        'o_schoolCategoryDescriptors'                        => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/schoolCategoryDescriptors?',
+        'o_staffClassificationDescriptors'                   => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/staffClassificationDescriptors?',
+        'o_staffIdentificationSystemDescriptors'             => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/staffIdentificationSystemDescriptors?',
+        'o_stateAbbreviationDescriptors'                     => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/stateAbbreviationDescriptors?',
+        'o_teachingCredentialDescriptors'                    => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/teachingCredentialDescriptors?',
+        'o_telephoneNumberTypeDescriptors'                   => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/telephoneNumberTypeDescriptors?',
+        'o_termDescriptors'                                  => '/%%databaseUuid%%/%%year%%/data/v3/ed-fi/termDescriptors?',
+    );
 
 
     /**
@@ -213,25 +274,30 @@ class edfiSuite3
      * @param bool $instanceSpecific Instance-specific ODS?
      * @return bool
      */
-    final public function init(string $apiBase, string $clientID, string $clientSecret, string $apiSubscriptionKey = "", bool $instanceSpecific = false, string $databaseUuid = ""): bool {
+    final public function init(string $apiBase, string $clientID, string $clientSecret, string $apiSubscriptionKey = "", bool $instanceSpecific = false, string $databaseUuid = "", bool $yearBeforeData = false): bool {
         $this->apiURLs['apiBase'] = $apiBase;
         $this->clientID = $clientID;
         $this->clientSecret = $clientSecret;
 
-        /* API Subscription Key is optional. Assign if provided. */
-        if (!empty($apiSubscriptionKey)) {
-            $this->apiSubscriptionKey = $apiSubscriptionKey;
-        }
+  	/* API Subscription Key is optional. Assign if provided. */
+	if (!empty($apiSubscriptionKey)) {
+      	    $this->apiSubscriptionKey = $apiSubscriptionKey;
+	}
 
-        /* Is this an instance-specific, multi-year API? */
+	/* Is this an instance-specific, multi-year API? */
         if (!empty($instanceSpecific)) {
-            $this->apiInstSpec = $instanceSpecific;
+	    $this->apiInstSpec = $instanceSpecific;
         }
 
-        /* Is there a database UUID configured for this connection? */
+	/* Is there a database UUID configured for this connection? */
         if (!empty($databaseUuid)) {
-            $this->databaseUuid = $databaseUuid;
+       	    $this->databaseUuid = $databaseUuid;
         }
+
+	/* Ed-Fi v7.x SaaS: year comes before /data/v3 (and before /oauth/token). */
+        if ($yearBeforeData) {
+	    $this->yearBeforeData = true;
+    	}
 
         $attemptLimit = 5;
         $attempts = 0;
@@ -299,10 +365,16 @@ class edfiSuite3
 
         if (array_key_exists($urlKey, $this->apiURLs) === true) {
             if ($this->apiInstSpec) {
+		/* Pattern 2: instance-specific, no year in path. */
                 $url .= $this->apiInstSpecURLs[$urlKey];
-            } elseif (isset($this->databaseUuid) && !empty($this->databaseUuid)) {
+            } elseif (!empty($this->databaseUuid) && $this->yearBeforeData) {
+                /* Pattern 4 (v7.x SaaS): /{uuid}/{year}/oauth/token  and  /{uuid}/{year}/data/v3/... */
+                $url .= str_replace("%%databaseUuid%%", $this->databaseUuid, $this->apiYearUuidSpecUrls[$urlKey]);
+            } elseif (!empty($this->databaseUuid)) {
+                /* Pattern 3: /data/v3/{uuid}/{year}/...  token: /{uuid}/oauth/token */
                 $url .= str_replace("%%databaseUuid%%", $this->databaseUuid, $this->apiInstYearSpecUrls[$urlKey]);
             } else {
+                /* Pattern 1: standard /data/v3/{year}/... */
                 $url .= $this->apiURLs[$urlKey];
             }
             // Inject the current school year so %%year%% tokens are resolved automatically.
@@ -394,6 +466,7 @@ class edfiSuite3
         } else if ($apiResponse === false) {
             return false;
         } else {
+	    echo "\n[DEBUG API RESPONSE]: " . substr($apiResponse, 0, 500) . "\n";
             $apiResponse = json_decode($apiResponse, true);
 
             if ($apiResponse === null) {
@@ -424,7 +497,25 @@ class edfiSuite3
             $url = $this->generateURL($urlKey, $queryStringParams, $urlParams);
             $records = $this->makeCURLRequest('GET', $url);
 
-            if ($records !== false && is_array($records)) {
+	    /* ── 401 Re-auth fallback ──────────────────────────────────────────
+             * Bearer tokens can expire mid-job on long paginated pulls.
+             * If the API returns 401, attempt one token refresh and retry the
+             * same offset. If the refresh also fails (bad credentials, revoked
+             * key, etc.) getAuthorizationToken() returns false and we abort —
+             * so this will not loop indefinitely on a permanent auth failure.  */
+            if (curl::$debugInfos['http_code'] === 401) {
+                log::logAlert('HTTP 401 on GET — attempting token refresh.');
+                if ($this->getAuthorizationToken()) {
+                    log::logAlert('Token refreshed — retrying offset ' . $queryStringParams['offset'] . '.');
+                    continue;
+                } else {
+                    log::logAlert('Token refresh failed — aborting loop.');
+                    break;
+                }
+            }
+            /* ─────────────────────────────────────────────────────────────── */
+
+            if ($records !== false && is_array($records) && isset($records[0])) {
                 $limit = count($records);
 
                 if ($limit > 0) {

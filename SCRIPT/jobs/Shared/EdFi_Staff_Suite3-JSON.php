@@ -51,7 +51,7 @@ $config = array(
     'exports'                     => array(
         7 => array(
             'name'    => 'Ed-Fi Suite 3 - People',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -114,7 +114,7 @@ $config = array(
 
         1 => array(
             'name'    => 'Ed-Fi Suite 3 - Staffs',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -400,19 +400,24 @@ class jobTransformer implements i_jobTransformation {
         global $apiDestination;
 
         //get entities from student, will only pull records for entities that exist in ODS already.
+        $apiConnParams = custom_locationproperties::getConnectionParameters($apiDestination);
         $edfiPointer = new edfiSuite3();
         $ret = $edfiPointer->init(
-            custom_locationproperties::getConnectionParameters($apiDestination)['apiUrlBase'],
-            driver::$crypto->decrypt(custom_locationproperties::getConnectionParameters($apiDestination)['apiClientID']),
-            driver::$crypto->decrypt(custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret']),
+            $apiConnParams['apiUrlBase'],
+            driver::$crypto->decrypt($apiConnParams['apiClientID']),
+            driver::$crypto->decrypt($apiConnParams['apiClientSecret']),
             "",
-            custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
-            driver::$crypto->decrypt(custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'])
+            $apiConnParams['instanceSpecific']   ?? false,
+            driver::$crypto->decrypt($apiConnParams['databaseUuid'] ?? ''),
+            $apiConnParams['yearBeforeData']     ?? false
         );
 
         if ($ret !== false) {
             $edfiPointer->loopDataWithCallback('o_schools', array('offset' => 0, 'localEducationAgencyId' => custom_locationproperties::get_districtID()), array(), function ($record) {
-                $code = substr($record['schoolId'], -4);
+                if (!is_array($record)) {
+			return false;
+		}
+		$code = substr($record['schoolId'], -4);
                 if (!empty($code)) {
                     driver::$sharedBuckets['odsEntities'][] = $code;
                 }
@@ -693,7 +698,7 @@ class jobTransformer implements i_jobTransformation {
 
         /* Build initial export record. */
         $out = array(
-            "personId" => $row["PersonId"],
+            "personId" => self::getStaffId($row),
             "sourceSystemDescriptor" => custom_locationproperties::GetDescriptorUrlBaseSuite3($apiDestination, 'SourceSystemDescriptor') . "#Skyward"
         );
 

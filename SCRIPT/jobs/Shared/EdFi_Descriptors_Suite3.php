@@ -57,6 +57,7 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_certificationFieldDescriptors'
             )
         ),
@@ -74,13 +75,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_certificationLevelDescriptors'
             )
         ),
 
         2 => array(
             'name'    => 'Ed-Fi Suite 3 - Staff Identification Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -91,13 +93,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_staffIdentificationSystemDescriptors'
             )
         ),
 
         3 => array(
             'name'    => 'Ed-Fi Suite 3 - Separation Reason Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -108,13 +111,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_separationReasonDescriptors'
             )
         ),
 
         4 => array(
             'name'    => 'Ed-Fi Suite 3 - Level of Education Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -125,13 +129,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_levelOfEducationDescriptors'
             )
         ),
 
         5 => array(
             'name'    => 'Ed-Fi Suite 3 - Teaching Credential Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -146,13 +151,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_teachingCredentialDescriptors'
             )
         ),
 
         6 => array(
             'name'    => 'Ed-Fi Suite 3 - Grade Level Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -163,13 +169,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_gradeLevelDescriptors'
             )
         ),
 
         7 => array(
             'name'    => 'Ed-Fi Suite 3 - Staff Classification Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -180,13 +187,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_staffClassificationDescriptors'
             )
         ),
 
         8 => array(
             'name'    => 'Ed-Fi Suite 3 - Employment Status Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -197,13 +205,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_employmentStatusDescriptors'
             )
         ),
 
         9 => array(
             'name'    => 'Ed-Fi Suite 3 - Citizenship Status Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -214,13 +223,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_citizenshipStatusDescriptors'
             )
         ),
 
         10 => array(
             'name'    => 'Ed-Fi Suite 3 - Electronic Mail Type Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -231,13 +241,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_electronicMailTypeDescriptors'
             )
         ),
 
         11 => array(
             'name'    => 'Ed-Fi Suite 3 - Sex Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -248,13 +259,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_sexDescriptors'
             )
         ),
 
         12 => array(
             'name'    => 'Ed-Fi Suite 3 - Race Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -265,13 +277,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_raceDescriptors'
             )
         ),
 
         13 => array(
             'name'    => 'Ed-Fi Suite 3 - Telephone Number Type Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -282,13 +295,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_telephoneNumberTypeDescriptors'
             )
         ),
 
         14 => array(
             'name'    => 'Ed-Fi Suite 3 - Address Type Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -299,13 +313,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_addressTypeDescriptors'
             )
         ),
 
         15 => array(
             'name'    => 'Ed-Fi Suite 3 - Education Organization Category Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -316,13 +331,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_educationOrganizationCategoryDescriptors'
             )
         ),
 
         16 => array(
             'name'    => 'Ed-Fi Suite 3 - State Abbreviation Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -333,13 +349,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_stateAbbreviationDescriptors'
             )
         ),
 
         17 => array(
             'name'    => 'Ed-Fi Suite 3 - Operational Status Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -350,13 +367,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_operationalStatusDescriptors'
             )
         ),
 
         18 => array(
             'name'    => 'Ed-Fi Suite 3 - Absence Event Category Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -371,13 +389,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_absenceEventCategoryDescriptors'
             )
         ),
 
         19 => array(
             'name'    => 'Ed-Fi Suite 3 - Credential Field Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -392,6 +411,7 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_credentialFieldDescriptors'
             )
             /*'output'  => array(
@@ -404,7 +424,7 @@ $config = array(
 
         20 => array(
             'name'    => 'Ed-Fi Suite 3 - Credential Type Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -415,13 +435,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_credentialTypeDescriptors'
             )
         ),
 
         21 => array(
             'name'    => 'Ed-Fi Suite 3 - School Category Type Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -432,13 +453,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_schoolCategoryDescriptors'
             )
         ),
 
         22 => array(
             'name'    => 'Ed-Fi Suite 3 - Evaluation Period Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -449,13 +471,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_evaluationPeriodDescriptors'
             )
         ),
 
         23 => array(
             'name'    => 'Ed-Fi Suite 3 - Performance Evaluation Rating Level Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -466,13 +489,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_performanceEvaluationRatingLevelDescriptors'
             )
         ),
 
         24 => array(
             'name'    => 'Ed-Fi Suite 3 - Performance Evaluation Type Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -483,13 +507,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_performanceEvaluationTypeDescriptors'
             )
         ),
 
         25 => array(
             'name'    => 'Ed-Fi Suite 3 - Source System Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type' => 'noop'
             ),
@@ -500,13 +525,14 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_sourceSystemDescriptors'
             )
         ),
 
         26 => array(
             'name'    => 'Ed-Fi Suite 3 - Term Descriptors',
-            'enabled' => false,
+            'enabled' => true,
             'input'   => array(
                 'type'        => 'odbc',
                 'dsn'         => custom_locationproperties::getConnectionParameters('prod_skyward_fin')['DSN'],
@@ -521,6 +547,7 @@ $config = array(
                 'edfi_apiClientSecret'  => custom_locationproperties::getConnectionParameters($apiDestination)['apiClientSecret'],
                 'edfi_instanceSpecific' => custom_locationproperties::getConnectionParameters($apiDestination)['instanceSpecific'],
                 'edfi_databaseUuid'     => custom_locationproperties::getConnectionParameters($apiDestination)['databaseUuid'],
+                'edfi_yearBeforeData'   => custom_locationproperties::getConnectionParameters($apiDestination)['yearBeforeData'] ?? false,
                 'edfi_apiEndpoint'      => 'o_termDescriptors'
             )
         ),

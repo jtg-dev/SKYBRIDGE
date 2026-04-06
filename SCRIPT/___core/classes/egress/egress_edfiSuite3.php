@@ -13,6 +13,7 @@ class egress_edfiSuite3 implements i_egress {
     private static $edfi_apiSubscriptionKey = '';
     private static $edfi_apiInstanceSpecific = '';
     private static $edfi_databaseUuid = '';
+    private static $edfi_yearBeforeData = false;
     private static $edfi_pointer = '';
     private static $httpReturnCodeStats = array();
     private static $httpRequestTimeStats = array();
@@ -31,6 +32,7 @@ class egress_edfiSuite3 implements i_egress {
         self::$edfi_apiSubscriptionKey = driver::$currentExport['output']['edfi_apiSubscriptionKey'] ?? '';
         self::$edfi_apiInstanceSpecific = driver::$currentExport['output']['edfi_instanceSpecific'] ?? false;
         self::$edfi_databaseUuid = driver::$currentExport['output']['edfi_databaseUuid'] ?? '';
+	self::$edfi_yearBeforeData = !empty(driver::$currentExport['output']['edfi_yearBeforeData']);
         driver::$currentExport['output']['edfi_apiEndpoint'] = driver::$currentExport['output']['edfi_apiEndpoint'] ?? '';
 
         //calculate rest period in microseconds
@@ -79,7 +81,8 @@ class egress_edfiSuite3 implements i_egress {
             self::$edfi_apiClientSecret,
             self::$edfi_apiSubscriptionKey,
             self::$edfi_apiInstanceSpecific,
-            self::$edfi_databaseUuid
+            self::$edfi_databaseUuid,
+	    self::$edfi_yearBeforeData
         );
 
         if ($ret === false) {
